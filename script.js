@@ -72,7 +72,7 @@ const products = [
   },
   {
   id: 8,
-  name: "Woooden Power Bank",
+  name: "Wooden Power Bank",
   price: 1499,
   ecoScore: 90,
   carbonFootprint: "1.6 kg CO₂",
@@ -258,7 +258,7 @@ const products = [
   ecoScore: 88,
   carbonFootprint: "2.2 kg CO₂",
   recyclability: "Recyclable",
-  image: "https://i.pinimg.com/736x/ca/1e/69/ca1e69bf867bdd0dd4e115788244d0d4.jpg ",
+  image: "https://i.pinimg.com/736x/ca/1e/69/ca1e69bf867bdd0dd4e115788244d0d4.jpg",
   category: "Clothing",
 }
 
@@ -519,8 +519,15 @@ document.querySelectorAll('a[href="#home"]').forEach(link => {
     renderComparison();        // hide comparison
   });
 });
-window.addEventListener("scroll", handleScrollAnimations);
-window.addEventListener("load", () => {
-  handleScrollAnimations();
+// Initialize on page load
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
+    renderProducts();
+    handleScrollAnimations();
+  });
+} else {
   renderProducts();
-});
+  handleScrollAnimations();
+}
+
+window.addEventListener("scroll", handleScrollAnimations);
