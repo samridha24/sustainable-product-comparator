@@ -41,7 +41,7 @@ const products = [
   category: "Bags",
 },
 {
-  id: 29,
+  id: 5,
   name: "Reusable Cotton Bag",
   price: 450,
   ecoScore: 95,
@@ -51,7 +51,7 @@ const products = [
   category: "Bags",
 },
 {
-  id: 28,
+  id: 6,
   name: "Upcycled Denim Bag",
   price: 800,
   ecoScore: 89,
@@ -61,7 +61,7 @@ const products = [
   category: "Bags",
 },
   {
-    id: 5,
+    id: 7,
     name: "Solar Power Bank",
     price: 1850,
     ecoScore: 78,
@@ -71,7 +71,7 @@ const products = [
     category: "Electronics",
   },
   {
-  id: 6,
+  id: 8,
   name: "Woooden Power Bank",
   price: 1499,
   ecoScore: 90,
@@ -82,7 +82,7 @@ const products = [
 },
 
   {
-    id: 7,
+    id: 9,
     name: "Beeswax Food Wraps",
     price: 400,
     ecoScore: 95,
@@ -92,7 +92,7 @@ const products = [
     category: "Kitchen",
   },
   {
-  id: 8,
+  id: 10,
   name: "Paper Food Wrap",
   price: 199,
   ecoScore: 89,
@@ -102,7 +102,7 @@ const products = [
   category: "Kitchen",
 },
 {
-  id: 9,
+  id: 11,
   name: "Brown Paper Food Wrap",
   price: 299,
   ecoScore: 88,
@@ -112,7 +112,7 @@ const products = [
   category: "Kitchen",
 },
   {
-    id: 10,
+    id: 12,
     name: "Bamboo Toothbrush",
     price: 199,
     ecoScore: 96,
@@ -122,7 +122,7 @@ const products = [
     category: "Personal Care",
   },
   {
-  id: 11,
+  id: 13,
   name: "Wooden Toothbrush",
   price: 249,
   ecoScore: 94,
@@ -132,7 +132,7 @@ const products = [
   category: "Personal Care",
 },
   {
-  id: 12,
+  id: 14,
   name: "Organic Cotton Shirt",
   price: 1599,
   ecoScore: 90,
@@ -142,7 +142,7 @@ const products = [
   category: "Clothing",
 },
 {
-  id: 13,
+  id: 15,
   name: "Hemp Casual Shirt",
   price: 2450,
   ecoScore: 94,
@@ -152,7 +152,7 @@ const products = [
   category: "Clothing",
 },
 {
-  id: 14,
+  id: 16,
   name: "Recycled Polyester Shirt",
   price: 1200,
   ecoScore: 82,
@@ -162,7 +162,7 @@ const products = [
   category: "Clothing",
 },
 {
-  id: 15,
+  id: 17,
   name: "Cork Plant Pot",
   price: 399,
   ecoScore: 92,
@@ -172,7 +172,7 @@ const products = [
   category: "Home & Garden",
 },
 {
-  id: 16,
+  id: 18,
   name: "Wooden Plant Pot",
   price: 799,
   ecoScore: 88,
@@ -182,7 +182,7 @@ const products = [
   category: "Home & Garden",
 },
 {
-  id: 17,
+  id: 19,
   name: "Moss Fiber Plant Pot",
   price: 299,
   ecoScore: 95,
@@ -192,7 +192,7 @@ const products = [
   category: "Home & Garden",
 },
 {
-  id: 18,
+  id: 20,
   name: "Wooden Food Container",
   price: 899,
   ecoScore: 88,
@@ -202,7 +202,7 @@ const products = [
   category: "Kitchen",
 },
 {
-  id: 19,
+  id: 21,
   name: "Sugarcane Bagasse Container",
   price: 299,
   ecoScore: 95,
@@ -212,7 +212,7 @@ const products = [
   category: "Kitchen",
 },
 {
-  id: 20,
+  id: 22,
   name: "Glass Food Container",
   price: 499,
   ecoScore: 92,
@@ -222,17 +222,17 @@ const products = [
   category: "Kitchen",
 },
 {
-  id: 21,
+  id: 23,
   name: "Stainless Steel Food Container",
   price: 699,
   ecoScore: 94,
   carbonFootprint: "0.7 kg CO₂",
   recyclability: "100% Recyclable & Reusable",
   image: "https://i.pinimg.com/736x/08/bc/fe/08bcfe217e51695a62a108237f34ee15.jpg",
-  category: "Food Containers",
+  category: "Kitchen",
 },
 {
-  id: 22,
+  id: 24,
   name: "Organic Cotton Pants",
   price: 1299,
   ecoScore: 91,
@@ -242,7 +242,7 @@ const products = [
   category: "Clothing",
 },
 {
-  id: 23,
+  id: 25,
   name: "Hemp Trousers",
   price: 1899,
   ecoScore: 94,
@@ -252,7 +252,7 @@ const products = [
   category: "Clothing",
 },
 {
-  id: 24,
+  id: 26,
   name: "Recycled Denim Jeans",
   price: 1599,
   ecoScore: 88,
@@ -266,7 +266,7 @@ const products = [
 
 // ===== State =====
 let compareIds = [];
-
+let currentCategory = "All";
 // ===== DOM Elements =====
 const productsGrid = document.getElementById("productsGrid");
 const searchInput = document.getElementById("searchInput");
@@ -337,29 +337,61 @@ function renderProducts(query = "") {
   });
 }
 function filterCategory(category) {
+  currentCategory = category;
   if (category === "All") {
     renderProducts();
-  } else {
-    const filtered = products.filter(p => p.category === category);
-
-    productsGrid.innerHTML = "";
-
-    filtered.forEach((product) => {
-      const card = document.createElement("div");
-      card.className = "product-card";
-      card.innerHTML = `
-        <div class="card-image">
-          <img src="${product.image}" alt="${product.name}" />
-        </div>
-        <div class="card-body">
-          <span class="card-category">${product.category}</span>
-          <h3 class="card-name">${product.name}</h3>
-          <p class="card-price">₹${product.price.toLocaleString()}</p>
-        </div>
-      `;
-      productsGrid.appendChild(card);
-    });
+    return;
   }
+
+  const filtered = products.filter(p => p.category === category);
+
+  productsGrid.innerHTML = "";
+
+  filtered.forEach((product) => {
+    const isSelected = compareIds.includes(product.id);
+
+    const card = document.createElement("div");
+    card.className = "product-card";
+
+    card.innerHTML = `
+      <div class="card-image">
+        <img src="${product.image}" alt="${product.name}" />
+      </div>
+      <div class="card-body">
+        <span class="card-category">${product.category}</span>
+        <h3 class="card-name">${product.name}</h3>
+        <p class="card-price">₹${product.price.toLocaleString()}</p>
+
+        <p class="eco-score-label">Eco Score</p>
+        <div class="eco-score-row">
+          <div class="eco-bar-track">
+            <div class="eco-bar-fill" data-score="${product.ecoScore}"></div>
+          </div>
+          <span class="eco-score-value">${product.ecoScore}%</span>
+        </div>
+
+        <button class="compare-btn ${isSelected ? "selected" : ""}" data-id="${product.id}">
+          ${isSelected ? "✓ Added to Compare" : "+ Compare"}
+        </button>
+      </div>
+    `;
+
+    productsGrid.appendChild(card);
+  });
+
+  // animate bars
+  requestAnimationFrame(() => {
+    document.querySelectorAll(".eco-bar-fill").forEach((bar) => {
+      bar.style.width = bar.dataset.score + "%";
+    });
+  });
+
+  // attach compare button
+  document.querySelectorAll(".compare-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      toggleCompare(parseInt(btn.dataset.id));
+    });
+  });
 }
 // ===== Toggle Compare =====
 function toggleCompare(id) {
@@ -368,7 +400,11 @@ function toggleCompare(id) {
   } else {
     compareIds.push(id);
   }
+  if (currentCategory === "All") {
   renderProducts(searchInput.value);
+} else {
+  filterCategory(currentCategory);
+}
   renderComparison();
 }
 
@@ -421,7 +457,23 @@ function renderComparison() {
         </tbody>
       </table>
     `;
+   
+let bestProduct = selected[0];
 
+selected.forEach(p => {
+  if (p.ecoScore > bestProduct.ecoScore) {
+    bestProduct = p;
+  }
+});
+
+// Show result
+const resultDiv = document.createElement("div");
+resultDiv.className = "best-product";
+resultDiv.innerHTML = `
+  🌱 <strong>Most Sustainable Product:</strong> ${bestProduct.name} (${bestProduct.ecoScore}% Eco Score)
+`;
+
+comparisonWrapper.appendChild(resultDiv);
     // Attach remove listeners
     document.querySelectorAll(".remove-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
