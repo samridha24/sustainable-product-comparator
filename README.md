@@ -59,14 +59,6 @@ When at least two products are selected, a comparison table appears with:
 ### 5) Mobile-Friendly Navigation
 A compact menu is available on smaller screens.
 
-## Future Improvements
-
-- Add sorting options (price, eco score, carbon footprint)
-- Persist selected compare items using localStorage
-- Add dedicated product detail modal/page
-- Add accessibility enhancements (keyboard focus states, ARIA improvements)
-- Replace static product data with API or JSON source
-
 ## License
 
 This project is for academic and learning purposes.
