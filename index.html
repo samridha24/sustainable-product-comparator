@@ -23,6 +23,9 @@
         <a href="#products">Products</a>
         <a href="#compare">Compare</a>
         <a href="#about">About</a>
+        <a href="#" id="authNavBtn">Login</a>
+        <a href="#" id="cartNavBtn" style="display:none;">🛒 Cart <span id="cartBadge" style="background:var(--primary); color:white; border-radius:50%; padding: 2px 6px; font-size:12px;">0</span></a>
+        <a href="#" id="logoutNavBtn" style="display:none;">Logout</a>
       </div>
       <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
     </div>
@@ -31,6 +34,9 @@
       <a href="#products">Products</a>
       <a href="#compare">Compare</a>
       <a href="#about">About</a>
+      <a href="#" id="authMobileBtn">Login</a>
+      <a href="#" id="cartMobileBtn" style="display:none;">🛒 Cart <span id="cartMobileBadge">0</span></a>
+      <a href="#" id="logoutMobileBtn" style="display:none;">Logout</a>
     </div>
   </nav>
 
@@ -139,6 +145,39 @@
       <p>© 2026 EcoCompare. Built with 💚 for the planet.</p>
     </div>
   </footer>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal" style="display:none;">
+    <div class="modal-content fade-in visible">
+      <span class="close-btn" id="closeAuthBtn">&times;</span>
+      <h2 id="authTitle" style="color:var(--text); margin-bottom: 20px;">Login</h2>
+      <div id="authError" style="color:#d9534f; margin-bottom:10px; display:none; background: #fdf2f2; padding: 10px; border-radius:8px;"></div>
+      <form id="authForm">
+        <input type="text" id="authName" placeholder="Full Name" style="display:none; width:100%; padding: 12px; margin-bottom:15px; border: 1px solid var(--border); border-radius:8px;" />
+        <input type="email" id="authEmail" placeholder="Email Address" required style="width:100%; padding: 12px; margin-bottom:15px; border: 1px solid var(--border); border-radius:8px;" />
+        <input type="password" id="authPassword" placeholder="Password" required style="width:100%; padding: 12px; margin-bottom:20px; border: 1px solid var(--border); border-radius:8px;" />
+        <button type="submit" class="compare-btn selected" style="width:100%; font-size: 16px;">Submit</button>
+      </form>
+      <p style="margin-top:20px; text-align:center;">
+        <a href="#" id="toggleAuthBtn" style="color:var(--primary); font-weight:600;">Need an account? Register</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div id="cartModal" class="modal" style="display:none;">
+    <div class="modal-content fade-in visible" style="max-width: 600px;">
+      <span class="close-btn" id="closeCartBtn">&times;</span>
+      <h2 style="color:var(--text); margin-bottom: 20px;">Your Cart</h2>
+      <div id="cartItems" style="max-height: 400px; overflow-y: auto;">
+        <!-- Cart items go here -->
+      </div>
+      <div class="cart-footer" style="margin-top: 25px; border-top: 1px solid var(--border); padding-top: 15px; text-align: right;">
+        <h3 style="margin-bottom: 15px;">Total: ₹<span id="cartTotal">0</span></h3>
+        <button id="checkoutBtn" class="compare-btn selected" style="font-size: 16px; padding: 10px 30px;">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
 
   <script src="./script.js"></script>
 </body>
