@@ -81,11 +81,13 @@
     </div>
     <div class="category-filters">
 <button onclick="filterCategory('All')">All</button>
-<button onclick="filterCategory('Home')">Home</button>
-<button onclick="filterCategory('Tech')">Tech</button>
-<button onclick="filterCategory('Outdoors')">Outdoors</button>
-<button onclick="filterCategory('Accessories')">Accessories</button>
 <button onclick="filterCategory('Personal Care')">Personal Care</button>
+<button onclick="filterCategory('Clothing')">Clothing</button>
+<button onclick="filterCategory('Electronics')">Electronics</button>
+<button onclick="filterCategory('Kitchen')">Kitchen</button>
+<button onclick="filterCategory('Drinkware')">Drinkware</button>
+<button onclick="filterCategory('Bags')">Bags</button>
+<button onclick="filterCategory('Home')">Home</button>
 </div>
     <div class="products-grid" id="productsGrid">
       <!-- Cards injected by JS -->
@@ -176,7 +178,56 @@
       </div>
     </div>
   </div>
+  <!-- PRODUCT QUICK VIEW MODAL -->
+<div id="productModal" class="modal" style="display:none;">
+  <div class="modal-content premium-modal">
+  <span class="close-btn" onclick="closeModal()">&times;</span>
 
+  <div class="modal-grid">
+    
+    <!-- LEFT IMAGE -->
+    <div class="modal-left">
+      <img id="modalImage" class="modal-img" />
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="modal-right">
+      <span class="modal-category" id="modalCategory"></span>
+
+      <h2 id="modalName"></h2>
+      <p class="modal-price" id="modalPrice"></p>
+
+      <!-- ECO CARD -->
+      <div class="eco-box">
+        <div class="eco-header">
+          <span>Total Eco Score</span>
+          <span id="modalEco"></span>%
+        </div>
+
+        <div class="eco-bar">
+          <div id="ecoBarFill"></div>
+        </div>
+
+        <div class="eco-stats">
+          <div>
+            ♻ Recyclability  
+            <p id="modalRecycle"></p>
+          </div>
+          <div>
+            🌍 Carbon Cost  
+            <p id="modalCarbon"></p>
+          </div>
+        </div>
+      </div>
+
+      <button id="modalCartBtn" class="add-btn">
+        Add to Cart
+      </button>
+
+    </div>
+  </div>
+</div>
+</div>
   <script src="./script.js"></script>
 </body>
 </html>
