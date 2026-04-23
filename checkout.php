@@ -4,56 +4,40 @@ header('Content-Type: application/json');
 require_once '../config/db.php';
 
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["success" => false, "message" => "Not logged in"]);
+    echo json_encode(["success" => false, "message" => "Please login to add to cart"]);
+    exit;
+}
+
+$data = json_decode(file_get_contents('php://input'), true);
+if (!isset($data['product_id'])) {
+    echo json_encode(["success" => false, "message" => "Missing parameters"]);
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
+$product_id = $data['product_id'];
 
-$stmt = $conn->prepare("
-    SELECT c.product_id, c.quantity, p.price 
-    FROM cart c 
-    JOIN products p ON c.product_id = p.id 
-    WHERE c.user_id = ?
-");
-$stmt->bind_param("i", $user_id);
+// Check if already in cart
+$stmt = $conn->prepare("SELECT id, quantity FROM cart WHERE user_id = ? AND product_id = ?");
+$stmt->bind_param("ii", $user_id, $product_id);
 $stmt->execute();
-$result = $stmt->get_result();
+$res = $stmt->get_result();
 
-$items = [];
-$total_amount = 0;
-while ($row = $result->fetch_assoc()) {
-    $items[] = $row;
-    $total_amount += $row['price'] * $row['quantity'];
+if ($row = $res->fetch_assoc()) {
+    $new_qty = $row['quantity'] + 1;
+    $upd = $conn->prepare("UPDATE cart SET quantity = ? WHERE id = ?");
+    $upd->bind_param("ii", $new_qty, $row['id']);
+    $upd->execute();
+} else {
+    $ins = $conn->prepare("INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, 1)");
+    $ins->bind_param("ii", $user_id, $product_id);
+    $ins->execute();
 }
 
-if (count($items) == 0) {
-    echo json_encode(["success" => false, "message" => "Cart is empty"]);
-    exit;
-}
+$count_stmt = $conn->prepare("SELECT SUM(quantity) as val FROM cart WHERE user_id = ?");
+$count_stmt->bind_param("i", $user_id);
+$count_stmt->execute();
+$c = $count_stmt->get_result()->fetch_assoc();
 
-$conn->begin_transaction();
-
-try {
-    $o_stmt = $conn->prepare("INSERT INTO orders (user_id, total_amount) VALUES (?, ?)");
-    $o_stmt->bind_param("id", $user_id, $total_amount);
-    $o_stmt->execute();
-    $order_id = $conn->insert_id;
-
-    $oi_stmt = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
-    foreach ($items as $item) {
-        $oi_stmt->bind_param("iiid", $order_id, $item['product_id'], $item['quantity'], $item['price']);
-        $oi_stmt->execute();
-    }
-
-    $del = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
-    $del->bind_param("i", $user_id);
-    $del->execute();
-
-    $conn->commit();
-    echo json_encode(["success" => true, "message" => "Order placed successfully!"]);
-} catch (Exception $e) {
-    $conn->rollback();
-    echo json_encode(["success" => false, "message" => "Order failed: " . $e->getMessage()]);
-}
+echo json_encode(["success" => true, "message" => "Added to cart", "cart_count" => $c['val']]);
 ?>
