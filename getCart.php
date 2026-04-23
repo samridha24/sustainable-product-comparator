@@ -11,9 +11,15 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 $stmt = $conn->prepare("
-    SELECT c.id as cart_id, c.quantity, p.id as product_id, p.name, p.price, p.image 
-    FROM cart c 
-    JOIN products p ON c.product_id = p.id 
+    SELECT 
+  c.id AS cart_id,
+  p.id AS product_id,
+  p.name,
+  p.price,
+  p.carbonFootprint,  -- 🔥 ADD THIS LINE
+  c.quantity
+FROM cart c
+JOIN products p ON c.product_id = p.id 
     WHERE c.user_id = ?
 ");
 $stmt->bind_param("i", $user_id);
