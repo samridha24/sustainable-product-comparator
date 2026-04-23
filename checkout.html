@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | EcoCompare</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            background: #f7f9f8;
+        }
+        input {
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        outline: none;
+        font-size: 14px;
+        transition: 0.2s;
+        }
+        .order-summary {
+        background: white;
+        padding: 28px;
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+        }
+        .btn-primary {
+        background: linear-gradient(to right, #2e7d32, #66bb6a);
+        border: none;
+        border-radius: 30px;
+        padding: 16px;
+        color: white;
+        font-weight: 600;
+        transition: 0.2s;
+        }
+
+        .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .checkout-success {
+        background: white;
+        border-radius: 20px;
+        max-width: 600px;
+        margin: 80px auto;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        input:focus {
+        border-color: #2e7d32;
+        box-shadow: 0 0 0 2px rgba(46,125,50,0.1);
+        }
+                .checkout-nav {
+        background: white;
+        padding: 16px 40px;
+        border-bottom: 1px solid #eee;
+        }
+
+        .checkout-nav .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        }
+
+        .secure-tag {
+        font-size: 14px;
+        color: #2e7d32;
+        font-weight: 600;
+        }
+        .checkout-layout {
+            max-width: 1200px; margin: 60px auto; padding: 0 24px;
+            display: grid; grid-template-columns: 1fr 400px; gap: 40px;
+        }
+        .form-section h2 { margin-bottom: 24px; font-size: 28px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+        .form-grid.full { grid-template-columns: 1fr; }
+        
+        .order-summary {
+            background: white; padding: 32px; border-radius: var(--radius-lg);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.06); position: sticky; top: 40px; height: fit-content;
+        }
+        .co2-banner {
+            background: linear-gradient(135deg, hsla(130, 60%, 45%, 0.1), hsla(130, 60%, 45%, 0.05));
+            border: 1px solid hsla(130, 60%, 45%, 0.3); border-radius: var(--radius-sm);
+            padding: 16px; margin-bottom: 24px; color: var(--eco-green);
+            display: flex; align-items:center; justify-content:center; gap: 8px; font-weight:700;
+        }
+        .co2-banner svg { stroke-width: 2.5; }
+        .summary-item { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 15px; }
+        .summary-total { display: flex; justify-content: space-between; border-top: 2px dashed var(--border-strong); margin-top: 24px; padding-top: 20px; font-size: 24px; font-weight: 800; color: var(--primary); font-family: var(--font-heading); }
+        
+        .checkout-success { text-align:center; padding: 60px 20px; display:none; flex-direction:column; align-items:center; justify-content:center;}
+        .success-circle { width: 80px; height: 80px; border-radius: 50%; background: var(--eco-green); color: white; display:flex; align-items:center; justify-content:center; margin-bottom: 24px; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        
+        @keyframes popIn {
+        0% { transform: scale(0.6); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+        }
+        @media(max-width: 900px) { .checkout-layout { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <nav class="checkout-nav">
+  <div class="nav-container">
+    <div class="logo">
+      🌿 EcoCompare
+    </div>
+    <span class="secure-tag">🔒 Secure Checkout</span>
+  </div>
+</nav>
+
+    <div class="checkout-layout" id="checkoutFlow">
+        
+        <!-- Form Area -->
+        <div class="form-section">
+            <h2>Shipping Details</h2>
+            <form id="checkoutForm">
+                <div class="form-grid full">
+                    <input type="text" placeholder="Full Name" required />
+                </div>
+                <div class="form-grid">
+                    <input type="email" placeholder="Email Address" required />
+                    <input type="tel" placeholder="Phone Number" required />
+                </div>
+                <div class="form-grid full">
+                    <input type="text" placeholder="Street Address" required />
+                </div>
+                <div class="form-grid">
+                    <input type="text" placeholder="City" required />
+                    <input type="text" placeholder="Postal Code" required />
+                </div>
+                
+                <h2 style="margin-top:40px;">Payment Method</h2>
+                <div class="form-grid full">
+                    <input type="text" placeholder="Card Number" value="####-####-####-####" disabled style="background:#f0f0f0;" />
+                </div>
+                <div class="form-grid">
+                    <input type="text" placeholder="MM/YY" disabled style="background:#f0f0f0;" />
+                    <input type="text" placeholder="CVC" disabled style="background:#f0f0f0;" />
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width:100%; font-size:18px; margin-top:32px; padding: 18px;">Confirm & Pay</button>
+            </form>
+        </div>
+        
+        <!-- Summary Area -->
+        <div>
+            <div class="order-summary" id="orderSummaryParams">
+                <div class="co2-banner">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                    Saving <span id="coTotal">0</span>kg of CO₂ today!
+                </div>
+                <h3>Order Summary</h3>
+                <div id="checkoutItemsList" style="margin:20px 0;">
+                    <!-- JS injscts lists -->
+                    <div class="loader-spinner"></div>
+                </div>
+                
+                <div class="summary-item">
+                    <span>Subtotal</span>
+                    <span id="subTotal">₹0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Eco-Shipping</span>
+                    <span style="color:var(--eco-green);">Free</span>
+                </div>
+                
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span id="grandTotal">₹0</span>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div class="checkout-layout checkout-success" id="successFlow">
+        <div class="success-circle">
+            <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        <h1 style="font-size:36px; margin-bottom:16px;">Order Confirmed!</h1>
+        <p style="font-size:18px; color:var(--text-muted); max-width:500px; margin-bottom:32px;">Thank you for making a sustainable choice. Your ecological footprint just got a little lighter.</p>
+        <button class="btn btn-primary" onclick="window.location.href='./index.html'">Return to Store</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+
+        // 🔐 Check login
+        const authRes = await fetch('../backend/authStatus.php');
+        const auth = await authRes.json();
+
+        if (!auth.loggedIn) {
+            window.location.href = './index.html';
+            return;
+        }
+
+        // 🛒 Fetch cart
+        const res = await fetch('../backend/getCart.php');
+        const data = await res.json();
+        console.log(data.items);
+        if (!data.success || data.items.length === 0) {
+            window.location.href = './index.html';
+            return;
+        }
+
+        const container = document.getElementById('checkoutItemsList');
+
+        let sumTotal = 0;
+        let co2Sum = 0;
+
+        container.innerHTML = data.items.map(item => {
+            sumTotal += item.price * item.quantity;
+            co2Sum += parseFloat(item.carbonFootprint || "0") * item.quantity;
+
+            return `
+            <div class="summary-item" style="align-items:center;">
+                <div style="flex:1;">
+                <strong>${item.quantity}x</strong> ${item.name}
+                </div>
+                <div style="font-weight:600;">
+                ₹${Number(item.price).toLocaleString()}
+                </div>
+            </div>
+            `;
+        }).join('');
+
+        // 🌍 CO2
+        document.getElementById('coTotal').textContent = co2Sum.toFixed(1);
+
+        // 💰 totals
+        document.getElementById('subTotal').textContent = '₹' + sumTotal.toLocaleString();
+        document.getElementById('grandTotal').textContent = '₹' + sumTotal.toLocaleString();
+
+        // 🧾 Checkout
+        document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const btn = e.target.querySelector('button');
+            btn.textContent = "Processing...";
+
+            const checkoutRes = await fetch('../backend/checkout.php');
+            const checkoutData = await checkoutRes.json();
+
+            if (checkoutData.success) {
+            document.getElementById('checkoutFlow').style.display = 'none';
+            document.getElementById('successFlow').style.display = 'flex';
+            } else {
+            btn.textContent = "Confirm & Pay";
+            alert(checkoutData.message);
+            }
+        });
+
+        });
+    </script>
+</body>
+</html>
